@@ -1,5 +1,24 @@
 # BayesCard
 
+## (NEW) How to test
+
+1. 按照环境设置创建虚拟环境 `bayes`；
+2. 已经训练好 `chow-liu_1.pkl`（IMDB 中的 `title` 表）；
+3. `job-light` 修改为简单的一条单表查询；
+4. 参照 `env.sh` 中的 `inference` 修改文件路径；
+5. 例如，只需要运行如下命令：
+```bash
+python run_experiment.py --dataset imdb --evaluate_cardinalities --model_path /path/to/BayesCard/Models/IMDB/chow-liu_1.pkl --query_file_location /path/to/BayesCard/Benchmark/IMDB/job-light.sql --learning_algo chow-liu --max_parents 1 --infer_algo exact-jit
+```
+
+结果：
+
+```
+Predicting cardinality for query 0: SELECT COUNT(*) FROM title WHERE production_year = 2011 AND kind_id = 7
+cardinality_true: 106229, cardinality_predict: 109346.56078518556, error: 1.0293475490232005, latency: 0.8861129999786499
+```
+
+
 ## Environment setup
   The following command using conda should setup the environment in linux CentOS.
   ```

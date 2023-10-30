@@ -88,14 +88,14 @@ def evaluate_cardinality_imdb_one(schema, model_path, query_path, infer_algo, le
             q_error = max(cardinality_predict / cardinality_true, cardinality_true / cardinality_predict)
         else:
             q_error = max(cardinality_predict / cardinality_true, cardinality_true / cardinality_predict)
-        print(f"latency: {latency_ms} and error: {q_error}")
+        print(f"cardinality_true: {cardinality_true}, cardinality_predict: {cardinality_predict}, error: {q_error}, latency: {latency_ms}")
         latencies.append(latency_ms)
         q_errors.append(q_error)
 
-    print("=====================================================================================")
-    for i in [50, 90, 95, 99, 100]:
-        print(f"q-error {i}% percentile is {np.percentile(q_errors, i)}")
-    print(f"average latency is {np.mean(latencies)} ms")
+    # print("=====================================================================================")
+    # for i in [50, 90, 95, 99, 100]:
+    #     print(f"q-error {i}% percentile is {np.percentile(q_errors, i)}")
+    # print(f"average latency is {np.mean(latencies)} ms")
 
 
 def evaluate_cardinality_imdb(schema, model_path, query_path, infer_algo, learning_algo, max_parents):
