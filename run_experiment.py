@@ -10,14 +10,14 @@ sys.path.append('/Users/ziniuw/Desktop/BayesCard')
 from DataPrepare.join_data_preparation import prepare_sample_hdf
 from DataPrepare.prepare_single_tables import prepare_all_tables
 from Schemas.imdb.schema import gen_job_light_imdb_schema
-from Testing.BN_training import train_DMV, train_Census, train_imdb
-from Testing.BN_testing import evaluate_cardinality_single_table, evaluate_cardinality_imdb
+from Testing.BN_training import train_DMV, train_Census, train_imdb, train_imdb_one
+from Testing.BN_testing import evaluate_cardinality_imdb_one, evaluate_cardinality_single_table, evaluate_cardinality_imdb
 
 
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('--dataset', default='dmv', help='Which dataset to be used')
+    parser.add_argument('--dataset', default='imdb', help='Which dataset to be used')
 
     # generate hdf, this part is only related to imdb job
     # the preprocessing uses the code from deepdb-public
@@ -41,9 +41,9 @@ if __name__ == '__main__':
     # evaluation
     parser.add_argument('--evaluate_cardinalities', help='Evaluates SPN ensemble to compute cardinalities',
                         action='store_true')
-    parser.add_argument('--model_location', nargs='+', default='../imdb-benchmark/bn_ensembles/clt.pkl')
+    parser.add_argument('--model_location', nargs='+', default='/home/ubuntu/yygs-projects/BayesCard/Benchmark/IMDB/ensemble_loader.pkl')
     parser.add_argument('--infer_algo', default='exact', help="BN's structure learning algorithm")
-    parser.add_argument('--query_file_location', default='./benchmarks/dmv/sql/cardinality_queries.sql')
+    parser.add_argument('--query_file_location', default='/home/ubuntu/yygs-projects/BayesCard/Benchmark/IMDB/job-light.sql')
     parser.add_argument('--ground_truth_file_location', default=None)
 
 
@@ -93,10 +93,10 @@ if __name__ == '__main__':
         elif args.generate_models:
             if not os.path.exists(args.model_path):
                 os.makedirs(args.model_path)
-            train_imdb(schema, args.hdf_path, args.model_path, args.learning_algo, args.max_parents, args.sample_size)
+            train_imdb_one(schema, args.hdf_path, args.model_path, args.learning_algo, args.max_parents, args.sample_size)
 
         elif args.evaluate_cardinalities:
-            evaluate_cardinality_imdb(schema, args.model_path, args.query_file_location, args.infer_algo,
+            evaluate_cardinality_imdb_one(schema, args.model_path, args.query_file_location, args.infer_algo,
                                       args.learning_algo, args.max_parents)
 
     elif args.dataset == 'dmv':

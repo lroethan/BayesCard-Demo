@@ -20,47 +20,48 @@ def gen_job_light_imdb_schema(csv_path):
                            csv_file_location=csv_path.format('title'),
                            table_size=3486660))
 
-    # movie_info_idx
-    schema.add_table(Table('movie_info_idx', attributes=['id', 'movie_id', 'info_type_id', 'info', 'note'],
-                           csv_file_location=csv_path.format('movie_info_idx'),
-                           irrelevant_attributes=['info', 'note'],
-                           no_compression=['info_type_id'],
-                           table_size=3147110))
+    # # movie_info_idx
+    # schema.add_table(Table('movie_info_idx', attributes=['id', 'movie_id', 'info_type_id', 'info', 'note'],
+    #                        csv_file_location=csv_path.format('movie_info_idx'),
+    #                        irrelevant_attributes=['info', 'note'],
+    #                        no_compression=['info_type_id'],
+    #                        table_size=3147110))
 
-    # movie_info
-    schema.add_table(Table('movie_info', attributes=['id', 'movie_id', 'info_type_id', 'info', 'note'],
-                           csv_file_location=csv_path.format('movie_info'),
-                           irrelevant_attributes=['info', 'note'],
-                           no_compression=['info_type_id'],
-                           table_size=24988000))
+    # # movie_info
+    # schema.add_table(Table('movie_info', attributes=['id', 'movie_id', 'info_type_id', 'info', 'note'],
+    #                        csv_file_location=csv_path.format('movie_info'),
+    #                        irrelevant_attributes=['info', 'note'],
+    #                        no_compression=['info_type_id'],
+    #                        table_size=24988000))
 
-    # cast_info
-    schema.add_table(Table('cast_info', attributes=['id', 'person_id', 'movie_id', 'person_role_id', 'note', 'nr_order',
-                                                    'role_id'],
-                           csv_file_location=csv_path.format('cast_info'),
-                           irrelevant_attributes=['nr_order', 'note', 'person_id', 'person_role_id'],
-                           no_compression=['role_id'],
-                           table_size=63475800))
+    # # cast_info
+    # schema.add_table(Table('cast_info', attributes=['id', 'person_id', 'movie_id', 'person_role_id', 'note', 'nr_order',
+    #                                                 'role_id'],
+    #                        csv_file_location=csv_path.format('cast_info'),
+    #                        irrelevant_attributes=['nr_order', 'note', 'person_id', 'person_role_id'],
+    #                        no_compression=['role_id'],
+    #                        table_size=63475800))
 
-    # movie_keyword
-    schema.add_table(Table('movie_keyword', attributes=['id', 'movie_id', 'keyword_id'],
-                           csv_file_location=csv_path.format('movie_keyword'),
-                           no_compression=['keyword_id'],
-                           table_size=7522600))
+    # # movie_keyword
+    # schema.add_table(Table('movie_keyword', attributes=['id', 'movie_id', 'keyword_id'],
+    #                        csv_file_location=csv_path.format('movie_keyword'),
+    #                        no_compression=['keyword_id'],
+    #                        table_size=7522600))
 
     # movie_companies
-    schema.add_table(Table('movie_companies', attributes=['id', 'movie_id', 'company_id', 'company_type_id', 'note'],
-                           csv_file_location=csv_path.format('movie_companies'),
-                           irrelevant_attributes=['note'],
-                           no_compression=['company_id', 'company_type_id'],
-                           table_size=4958300))
+    # schema.add_table(Table('movie_companies', attributes=['id', 'movie_id', 'company_id', 'company_type_id', 'note'],
+    #                        csv_file_location=csv_path.format('movie_companies'),
+    #                        irrelevant_attributes=['note'],
+    #                        no_compression=['company_id', 'company_type_id'],
+    #                        table_size=4958300))
+
 
     # relationships
-    schema.add_relationship('movie_info_idx', 'movie_id', 'title', 'id')
-    schema.add_relationship('movie_info', 'movie_id', 'title', 'id')
-    schema.add_relationship('cast_info', 'movie_id', 'title', 'id')
-    schema.add_relationship('movie_keyword', 'movie_id', 'title', 'id')
-    schema.add_relationship('movie_companies', 'movie_id', 'title', 'id')
+    # schema.add_relationship('movie_info_idx', 'movie_id', 'title', 'id')
+    # schema.add_relationship('movie_info', 'movie_id', 'title', 'id')
+    # schema.add_relationship('cast_info', 'movie_id', 'title', 'id')
+    # schema.add_relationship('movie_keyword', 'movie_id', 'title', 'id')
+    # schema.add_relationship('movie_companies', 'movie_id', 'title', 'id')
 
     return schema
 
