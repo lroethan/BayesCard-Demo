@@ -23,8 +23,9 @@ def gen_job_light_imdb_schema(csv_path):
 
 def count_rows_with_condition(csv_file):
     # 读取CSV文件
+    schema = gen_job_light_imdb_schema(csv_file)
     df = pd.read_csv(csv_file, header=None, error_bad_lines=False)
-
+    df.columns = schema.tables[0].attributes
     # 设置条件
     condition = (df['production_year'] == 2011) & (df['kind_id'] == 7)
 

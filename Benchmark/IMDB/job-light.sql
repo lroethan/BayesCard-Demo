@@ -1,1 +1,1 @@
-SELECT COUNT(*) FROM title WHERE production_year = 2011 AND kind_id = 7||200
+SELECT COUNT(*) FROM title WHERE production_year = 2011 AND kind_id = 7||106229
