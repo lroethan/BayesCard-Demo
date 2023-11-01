@@ -1,0 +1,15 @@
+{
+    "table_name": "catalog_page",
+    "exprs": [
+        {
+            "col": "cp_start_date_sk",
+            "op": "=",
+            "value": "2450815"
+        },
+        {
+            "col": "cp_catalog_page_number",
+            "op": ">=",
+            "value": "30"
+        }
+    ]
+}

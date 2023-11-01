@@ -8,17 +8,22 @@ def gen_job_light_imdb_schema(csv_path):
 
     schema = SchemaGraph()
 
+    schema.add_table(Table('catalog_page', attributes=['cp_catalog_page_sk', 'cp_catalog_page_id', 'cp_start_date_sk', 'cp_end_date_sk', 'cp_department', 'cp_catalog_number',
+                                                'cp_catalog_page_number', 'cp_description', 'cp_type'],
+                           irrelevant_attributes=['cp_catalog_page_sk', 'cp_catalog_page_id', 'cp_description'],
+                           csv_file_location='/home/ubuntu/yygs-projects/tpcds/data/catalog_page.csv',
+                           table_size=12000))
     # tables
 
     # title
-    schema.add_table(Table('title', attributes=['id', 'title', 'imdb_index', 'kind_id', 'production_year', 'imdb_id',
-                                                'phonetic_code', 'episode_of_id', 'season_nr', 'episode_nr',
-                                                'series_years', 'md5sum'],
-                           irrelevant_attributes=['episode_of_id', 'title', 'imdb_index', 'phonetic_code', 'season_nr',
-                                                  'imdb_id', 'episode_nr', 'series_years', 'md5sum'],
-                           no_compression=['kind_id'],
-                           csv_file_location=csv_path.format('title'),
-                           table_size=3486660))
+    # schema.add_table(Table('title', attributes=['id', 'title', 'imdb_index', 'kind_id', 'production_year', 'imdb_id',
+    #                                             'phonetic_code', 'episode_of_id', 'season_nr', 'episode_nr',
+    #                                             'series_years', 'md5sum'],
+    #                        irrelevant_attributes=['episode_of_id', 'title', 'imdb_index', 'phonetic_code', 'season_nr',
+    #                                               'imdb_id', 'episode_nr', 'series_years', 'md5sum'],
+    #                        no_compression=['kind_id'],
+    #                        csv_file_location=csv_path.format('title'),
+    #                        table_size=3486660))
 
     # # movie_info_idx
     # schema.add_table(Table('movie_info_idx', attributes=['id', 'movie_id', 'info_type_id', 'info', 'note'],

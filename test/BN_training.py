@@ -32,10 +32,11 @@ def train_Census(csv_path, model_path, algorithm, max_parents, sample_size):
     print(f"model saved at {model_path}")
     return None
 
-def train_imdb_one(table, model_folder, algorithm, sample_size = 100000, max_parents = 1):
+def train_imdb_one(schema, hdf_path, model_folder, algorithm, max_parents, sample_size):
+    table = schema.tables[0]
     csv_path = table.csv_file_location
+    print(f"{schema.tables[0].table_name} csv_path: {csv_path}")
     data = pd.read_csv(csv_path, header=None, error_bad_lines=False)
-    data = data.iloc[:, :-1]
     new_cols = []
     #removing unuseful columns
     data.columns = table.attributes
@@ -47,7 +48,7 @@ def train_imdb_one(table, model_folder, algorithm, sample_size = 100000, max_par
     data.columns = new_cols
     BN = Bayescard_BN('imdbOne')
     BN.build_from_data(data, algorithm=algorithm, max_parents=max_parents, ignore_cols=['id'], sample_size=sample_size)
-    model_folder += f"/{table.table_name}.pkl"
+    model_folder += f"/{algorithm}_{max_parents}.pkl"
     print(f"{model_folder}")
     pickle.dump(BN, open(model_folder, 'wb'), pickle.HIGHEST_PROTOCOL)
     print(f"model saved at {model_folder}")

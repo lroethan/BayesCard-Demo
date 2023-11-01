@@ -89,7 +89,7 @@ class BN_Single():
             n_unique = dataset[col].nunique()
             if n_unique == 2:
                 attr_type[col] = 'boolean'
-            elif n_unique >= len(dataset)/20 or (self.is_numeric(dataset[col].iloc[0]) and n_unique > threshold):
+            elif n_unique >= len(dataset) / 10 or (self.is_numeric(dataset[col].iloc[0]) and n_unique > threshold):
                 attr_type[col] = 'continuous'
             else:
                 attr_type[col] = 'categorical'
