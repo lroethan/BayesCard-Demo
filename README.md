@@ -1,134 +1,15 @@
-# BayesCard
+### 测试
 
-## (NEW) How to test
-
-1. 按照环境设置创建虚拟环境 `bayes`；
-2. 已经训练好 `chow-liu_1.pkl`（IMDB 中的 `title` 表）；
-3. `job-light` 修改为简单的一条单表查询；
-4. 参照 `env.sh` 中的 `inference` 修改文件路径；
-5. 例如，只需要运行如下命令：
-```bash
-python run_experiment.py --dataset imdb --evaluate_cardinalities --model_path /path/to/BayesCard/Models/IMDB/chow-liu_1.pkl --query_file_location /path/to/BayesCard/Benchmark/IMDB/job-light.sql --learning_algo chow-liu --max_parents 1 --infer_algo exact-jit
-```
-
-结果：
+1. 安装环境（如果 `environment.yml` 装不成功可以手工安装，如下）
 
 ```
-Predicting cardinality for query 0: SELECT COUNT(*) FROM title WHERE production_year = 2011 AND kind_id = 7
-cardinality_true: 106229, cardinality_predict: 109346.56078518556, error: 1.0293475490232005, latency: 0.8861129999786499
+conda create -n bayes python=3.7.7
+conda activate bayes
+
+pip install arff==0.9 asn1crypto==0.24.0 atomicwrites==1.3.0 attrs==19.1.0 bloom-filter==1.3 certifi==2019.3.9 cffi==1.12.3 chardet==3.0.4 cloudpickle==1.2.1 colorama==0.4.1 cryptography==2.9.2 dask==1.2.0 decorator==4.4.0 ete3==3.1.1 idna==2.6 joblib==0.13.2 keyring==10.6.0 keyrings-alt==3.0 kiwisolver==1.1.0 lark-parser==0.7.1 locket==0.2.0 mock==3.0.4 more-itertools==7.0.0 mpmath==1.1.0 networkx==2.3 numexpr==2.6.9 numpy==1.16.3 pandas==0.23.4 partd==1.0.0 patsy==0.5.1 pgmpy==0.1.13 pluggy==0.9.0 py==1.8.0 py4j==0.10.8.1 pybind11==2.3.0 pycparser==2.19 pycrypto==2.6.1 pydot==1.4.1 pyparsing==2.4.0 pyqt5==5.12.1 matplotlib==3.0.3 pyqt5-sip==4.19.15 pytest==4.4.1 python-dateutil==2.7.5 pytz==2018.7 pyverdict==0.1.3.2 pyxdg==0.25 pyyaml==3.12 requests==2.18.4 scikit-learn==0.20.3 scipy==1.2.1 secretstorage==2.3.1 six==1.12.0 sklearn==0.0 spflow==0.0.34 sqlalchemy==1.3.11 sqlparse==0.3.0 statsmodels==0.9.0 sympy==1.4 tables==3.5.1 torch==1.7.1 toolz==0.9.0 tqdm==4.31.1 typing-extensions==3.7.4.3 urllib3==1.22 var-dump==1.2 wincertstore==0.2
+
 ```
 
+2. 由于训练好的字典已经上传，只需要启动服务端 `python bayes_inference.py`
+3. 测试 `python client.py`
 
-## Environment setup
-  The following command using conda should setup the environment in linux CentOS.
-  ```
-  conda env create -f environment.yml
-  ```
-  If not, you need to manually download the following packages
-  Required dependence: numpy, scipy, pandas, Pgmpy, pomegranate, networkx, tqdm, joblib, pytorch, psycopg2, scikit-learn, spflow, tables
-  
-  Additional dependence: numba, bz2, Pyro (These packages are not required to reproduce the result in the paper.)
-  
-## Dataset download:
-The optimal trained models for each dataset are already stored. If you are only interested in verifying the paper's result, you can skip the dataset download and model training, and directly execute the evaluate the learnt model.
-1. DMV dataset:
-   The DMV dataset is publically available at catalog.data.gov. The data is continuously updated but there shouldn't be any shift in distribution. If you would
-   like to reproduce the exact result as in paper, please contact the author for the snapshot that he downloaded.
-
-2. Census dataset:
-   The census dataset is publically available on UCI website: https://archive.ics.uci.edu/ml/datasets/US+Census+Data+%281990%29.
-
-3. IMDB dataset:
-   The imdb dataset can be downloaded here: http://homepages.cwi.nl/~boncz/job/imdb.tgz
-   
-## Reproducing DMV result:
-  In order to reproduce the single table result for DMV, 
-  First run the following command to train the model
-  ```
-  python run_experiment.py --dataset dmv
-         --generate_models
-         --csv_path .../DMV/DMV.csv
-         --model_path Benchmark/DMV
-         --learning_algo chow-liu
-         --max_parents 1
-         --sample_size 200000
-  ```
-  model_path specifies the location to save the model
-  
-  csv_path points the dataset you just downloaded
-  
-  algo: one can choose between chow-liu, greedy, exact, junction. Expect for chow-liu, other methods contain a large amount of randomness, so not garuantee to 
-  reproduce the exactly same result as paper.
-  
-  Then, evaluate the learnt model
-  ```
-  python run_experiment.py --dataset dmv
-         --evaluate_cardinalities
-         --model_path Benchmark/DMV/chow-liu_1.pkl
-         --query_file_location Benchmark/DMV/query.sql
-         --infer_algo exact-jit
-  ```
-  infer_algo: one can choose between exact, exact-jit, exact-jit-torch, progressive_sampling, BP and sampling. I'm current working on BP's optimization, so there might be some unexpected bugs. 
-  
-## Reproducing Census result:
-  Similar to DMV, first train the model
-  ```
-  python run_experiment.py --dataset census
-         --generate_models
-         --csv_path ../Census/Census.csv
-         --model_path Benchmark/Census
-         --learning_algo chow-liu
-         --max_parents 1
-         --sample_size 200000
-  ```
-  Then, evaluate the learnt model
-  ```
-  python run_experiment.py --dataset census
-         --evaluate_cardinalities
-         --model_path Benchmark/Census/chow-liu_1.pkl
-         --query_file_location Benchmark/Census/query.sql
-         --infer_algo exact-jit
-  ```
-  
-## Reproducing stability and scalability experiment on synthetic datasets:
-   Please refer to jupyter notebook: Testing/stability_experiment.ipybn, which contains the step-by-step guide to reproduce the result.
-   Other notebooks in that directory are for debug purposes only.
-
-## Reproducing IMDB results:
-   First prepare the data, i.e. adding some fanout columns
-   ```
-   python run_experiment.py --dataset imdb 
-          --generate_hdf 
-          --csv_path ../imdb-benchmark
-          --hdf_path ../imdb-benchmark/gen_hdf
-   ```
-   Then train a Bayescard ensemble of BNs
-   ```
-   python run_experiment.py --dataset imdb 
-          --generate_models
-          --hdf_path ../imdb-benchmark/gen_hdf
-          --model_path Benchmark/IMDB
-          --learning_algo chow-liu
-          --max_parents 1
-          --sample_size 200000
-   ```
-   Evaluate the learnt Bayescard
-   ```
-   python run_experiment.py --dataset imdb 
-          --evaluate_cardinalities
-          --model_path Benchmark/IMDB
-          --query_file_location Benchmark/IMDB/job-light.sql
-          --learning_algo chow-liu
-          --max_parents 1
-          --infer_algo exact-jit
-   ```
-   If you find the code helpful, please cite our paper:
-   ```
-   @article{wu2020bayescard,
-    title={BayesCard: Revitilizing Bayesian Frameworks for Cardinality Estimation},
-    author={Wu, Ziniu and Shaikhha, Amir and Zhu, Rong and Zeng, Kai and Han, Yuxing and Zhou, Jingren},
-    journal={arXiv preprint arXiv:2012.14743},
-    year={2020}
-    }
-   ```
-  
