@@ -1,0 +1,20 @@
+[{
+    "table_name": "date_dim",
+    "exprs": [
+        {
+            "col": "d_moy",
+            "op": "=",
+            "value": "11"
+        }
+    ]
+},
+{
+    "table_name": "item",
+    "exprs": [
+        {
+            "col": "i_manufact_id",
+            "op": "=",
+            "value": "816"
+        }
+    ]
+}]

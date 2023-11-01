@@ -1,31 +1,38 @@
 import requests
 import json
 
-# 定义JSON数据
-json_data = {
-    "table_name": "catalog_page",
-    "exprs": [
-        {
-            "col": "cp_start_date_sk",
-            "op": "=",
-            "value": "2450815"
-        },
-        {
-            "col": "cp_catalog_page_number",
-            "op": ">=",
-            "value": "30"
-        }
-    ]
-}
 
+json_data_list = [
+    {
+        "table_name": "date_dim",
+        "exprs": [
+            {
+                "col": "d_moy",
+                "op": "=",
+                "value": "11"
+            }
+        ]
+    },
+    {
+        "table_name": "item",
+        "exprs": [
+            {
+                "col": "i_manufact_id",
+                "op": "=",
+                "value": "816"
+            }
+        ]
+    }
+]
 
 url = 'http://127.0.0.1:5000/api' 
 headers = {'Content-Type': 'application/json'}
-response = requests.post(url, data=json.dumps(json_data), headers=headers)
 
+for json_data in json_data_list:
+    response = requests.post(url, data=json.dumps(json_data), headers=headers)
 
-if response.status_code == 200:
-    result = response.json()["result"]
-    print("Cardinality:", result)
-else:
-    print('请求失败:', response.status_code, response.text)
+    if response.status_code == 200:
+        result = response.json()["result"]
+        print("Cardinality:", result)
+    else:
+        print('Failure:', response.status_code, response.text)

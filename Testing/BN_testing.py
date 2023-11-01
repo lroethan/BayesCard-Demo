@@ -52,8 +52,7 @@ def evaluate_cardinality_single_table(model_path, query_path, infer_algo, sample
 
     return latencies, q_errors
 
-def evaluate_cardi(table, model_path, infer_algo, query_str):
-    sample_size = table.table_size
+def evaluate_cardi(model_path, infer_algo, query_str):
     with open(model_path, 'rb') as f:
         BN = pickle.load(f)
     if BN.infer_machine is None:
@@ -61,7 +60,7 @@ def evaluate_cardi(table, model_path, infer_algo, query_str):
         BN.init_inference_method()
     print(f"Predicting cardinality for query: {query_str}")
     query = parse_query_single_table(query_str.strip(), BN)
-    cardinality_predict = BN.query(query, sample_size=sample_size)
+    cardinality_predict = BN.query(query, sample_size=1000)
     return cardinality_predict
     
 

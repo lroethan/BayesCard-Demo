@@ -7,7 +7,8 @@ import numpy as np
 import pandas as pd
 import sys
 from flask import Flask, request
-sys.path.append('/home/ubuntu/yygs-projects/BayesCard')
+# sys.path.append('/home/ubuntu/yygs-projects/BayesCard')
+sys.path.append(os.path.join(os.path.dirname(__file__), 'BayesCard'))
 from DataPrepare.join_data_preparation import prepare_sample_hdf
 from DataPrepare.prepare_single_tables import prepare_all_tables
 from Schemas.imdb.schema import gen_job_light_imdb_schema
@@ -16,8 +17,7 @@ from Testing.BN_testing import evaluate_cardi, evaluate_cardinality_imdb_one, ev
 import json
 
 app = Flask(__name__)
-# table_names = ['catalog_page']
-query_file_location = "/home/ubuntu/yygs-projects/BayesCard/new_sql/new_sql.json"
+
 
 def construct_sql(table_name, exprs):
     sql = f"SELECT COUNT(*) FROM {table_name} WHERE "
@@ -31,16 +31,12 @@ def construct_sql(table_name, exprs):
     return sql
     
 def inference(json_query):
-    model_path = "/home/ubuntu/yygs-projects/BayesCard/new_model/"
-    table_csv_path = "/home/ubuntu/yygs-projects/tpcds/data/"
-    schema = gen_job_light_imdb_schema(table_csv_path)
+    model_path = os.path.join(os.path.dirname(__file__), 'new_model')
     table_name = json_query["table_name"]
     exprs = json_query["exprs"]
-    
-    table = schema.table_dictionary[table_name]
-    model = model_path + table_name + ".pkl"
+    model = os.path.join(model_path, table_name) + ".pkl"
     query_str = construct_sql(table_name, exprs)
-    return evaluate_cardi(table, model, "exact", query_str)
+    return evaluate_cardi(model, "exact", query_str)
 
 
 @app.route('/api', methods=['POST'])

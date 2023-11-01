@@ -34,7 +34,7 @@ def train_Census(csv_path, model_path, algorithm, max_parents, sample_size):
 
 def train_imdb_one(table, model_folder, algorithm, sample_size = 100000, max_parents = 1):
     csv_path = table.csv_file_location
-    data = pd.read_csv(csv_path, header=None, error_bad_lines=False)
+    data = pd.read_csv(csv_path, sep="|", header=None, error_bad_lines=False)
     data = data.iloc[:, :-1]
     new_cols = []
     #removing unuseful columns

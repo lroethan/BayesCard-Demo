@@ -13,6 +13,23 @@ def gen_job_light_imdb_schema(csv_path):
                            irrelevant_attributes=['cp_catalog_page_sk', 'cp_catalog_page_id', 'cp_description'],
                            csv_file_location='/home/ubuntu/yygs-projects/tpcds/data/catalog_page.csv',
                            table_size=12000))
+
+    schema.add_table(Table('date_dim', attributes=["d_date_sk", "d_date_id", "d_date", "d_month_seq", "d_week_seq", "d_quarter_seq", "d_year", "d_dow", "d_moy", "d_dom", "d_qoy", "d_fy_year", "d_fy_quarter_seq", "d_fy_week_seq", "d_day_name", "d_quarter_name", "d_holiday", "d_weekend", "d_following_holiday", "d_first_dom", "d_last_dom", "d_same_day_ly", "d_same_day_lq", "d_current_day", "d_current_week", "d_current_month", "d_current_quarter", "d_current_year"],
+                           irrelevant_attributes=['d_date_sk', 'd_date_id', 'd_date', 'd_dom'],
+                           csv_file_location='/home/ubuntu/yygs-projects/tpcds/data/date_dim.csv',
+                           table_size=12000))
+
+    schema.add_table(Table('item', attributes=["i_item_sk", "i_item_id", "i_rec_start_date", "i_rec_end_date",
+                                               "i_item_desc", "i_current_price", "i_wholesale_cost", "i_brand_id",
+                                               "i_brand", "i_class_id", "i_class", "i_category_id",
+                                               "i_category", "i_manufact_id", "i_manufact", "i_size",
+                                               "i_formulation", "i_color", "i_units", "i_container",
+                                               "i_manager_id", "i_product_name"],
+
+                           irrelevant_attributes=['i_item_sk', 'i_item_id', 'i_item_desc', 'i_brand', 'i_manufact', 'i_formulation', 'i_product_name'],
+                           csv_file_location='/home/ubuntu/yygs-projects/tpcds/data/item.csv',
+                           table_size=12000))
+    
     # tables
 
     # title
