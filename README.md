@@ -1,6 +1,6 @@
-### 测试
+### BayesCard demo, just for testing
 
-1. 安装环境（如果 `environment.yml` 装不成功可以手工安装，如下）
+1. Environment Setup (Please note that the absolute paths in the .yml file need to be modified.). If `environment.yml`` fails to install, you can manually install the dependencies as follows.:
 
 ```
 conda create -n bayes python=3.7.7
@@ -10,6 +10,10 @@ pip install arff==0.9 asn1crypto==0.24.0 atomicwrites==1.3.0 attrs==19.1.0 bloom
 
 ```
 
-2. 由于训练好的字典已经上传，只需要启动服务端 `python bayes_inference.py`
-3. 测试 `python client.py`
+2. Since the pre-trained dictionary has already been uploaded, you only need to start the server by running `python bayes_inference.py`
+3. Test by running `python client.py`
 
+
+### Tips for training
+
+During training, we do not consider columns with a large number of distinct values (NDV) or non-trivial types. This is consistent with the statistical information completion required for virtual index recommendations, as these excluded columns also do not take these factors into account.
