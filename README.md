@@ -16,6 +16,58 @@ pip install arff==0.9 asn1crypto==0.24.0 atomicwrites==1.3.0 attrs==19.1.0 bloom
 3. Test by running `python client.py`
 
 
+### Example
+
+SQL
+
+```
+select  dt.d_year
+     ,item.i_brand_id brand_id
+     ,item.i_brand brand
+     ,sum(ss_sales_price) sum_agg
+from  date_dim dt
+   ,store_sales
+   ,item
+where dt.d_date_sk = store_sales.ss_sold_date_sk
+  and store_sales.ss_item_sk = item.i_item_sk
+  and item.i_manufact_id = 816
+  and dt.d_moy=11
+group by dt.d_year
+       ,item.i_brand
+       ,item.i_brand_id
+order by dt.d_year
+       ,sum_agg desc
+       ,brand_id
+    limit 100;
+```
+
+
+JSON
+```
+json_data_list = [
+    {
+        "table_name": "date_dim",
+        "exprs": [
+            {
+                "col": "d_moy",
+                "op": "=",
+                "value": "11"
+            }
+        ]
+    },
+    {
+        "table_name": "item",
+        "exprs": [
+            {
+                "col": "i_manufact_id",
+                "op": "=",
+                "value": "816"
+            }
+        ]
+    }
+]
+```
+
 ### Tips for training
 
 During training, we do not consider columns with a large number of distinct values (NDV) or non-trivial types. This is consistent with the statistical information completion required for virtual index recommendations, as these excluded columns also do not take these factors into account.
