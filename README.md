@@ -1,6 +1,8 @@
+# Learning-based Index-specific Statisics Completion
+
 ### BayesCard demo, just for testing
 
-1. Environment Setup (Please note that the absolute paths in the .yml file need to be modified.). If `environment.yml`` fails to install, you can manually install the dependencies as follows.:
+1. Environment Setup (Please note that the absolute paths in the .yml file need to be modified.). If `environment.yml` fails to install, you can manually install the dependencies as follows.:
 
 ```
 conda create -n bayes python=3.7.7
@@ -17,3 +19,8 @@ pip install arff==0.9 asn1crypto==0.24.0 atomicwrites==1.3.0 attrs==19.1.0 bloom
 ### Tips for training
 
 During training, we do not consider columns with a large number of distinct values (NDV) or non-trivial types. This is consistent with the statistical information completion required for virtual index recommendations, as these excluded columns also do not take these factors into account.
+
+
+### Plans
+1. Automatically filter trainable columns from schema and statistics.
+2. Adapt to the TiDB's Cost estimation.
